@@ -9,6 +9,10 @@ namespace SMS_Data.Models
 {
     public class Student
     {
+        public Student()
+        {
+            marktable = new HashSet<Mark>();
+        }
         [Key]
         public long? StudentId { get;set;}
         public string? StudentName { get;set;}
@@ -36,7 +40,8 @@ namespace SMS_Data.Models
         public string? UpdatedBy { get;set;}
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
-        public virtual Class? ClassTable { get;set;} 
+        public virtual Class? ClassTable { get;set;}
+        public virtual ICollection<Mark>? marktable { get; set; }
 
 
     }
