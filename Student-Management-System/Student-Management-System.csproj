@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Student_Management_System</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SMS-Data\SMS-Data.csproj" />
+    <ProjectReference Include="..\SMS-Repo\SMS-Repo.csproj" />
+  </ItemGroup>
+
+</Project>
