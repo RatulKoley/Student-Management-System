@@ -13,6 +13,7 @@ namespace SMS_Data.Models
         {
             subjecttable = new HashSet<Subject>();
             studenttable = new HashSet<Student>();
+            marktable = new HashSet<Mark>();
         }
         [Key]
         public long? ClassId { get;set;}
@@ -30,5 +31,6 @@ namespace SMS_Data.Models
         public virtual Staff? stafftable { get;set;}
         public virtual ICollection<Subject>? subjecttable { get;set;}
         public virtual ICollection<Student>? studenttable { get;set;}
+        public virtual ICollection<Mark>? marktable { get;set;}
     }
 }
