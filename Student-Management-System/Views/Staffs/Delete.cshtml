@@ -1,0 +1,98 @@
+﻿@model SMS_Data.Models.Staff
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-confirm {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+        .btn-confirm:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .btn-cancel {
+        background-color: #fff;
+        border-color: #ddd;
+        color: #333;
+    }
+
+        .btn-cancel:hover {
+            background-color: #f8f9fa;
+            border-color: #ccc;
+        }
+</style>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="title">Delete Staff</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    @if (Model.ProfilePictureData != null && Model.ProfilePictureData.Length > 0)
+                    {
+                        <img src="data:image;base64,@Convert.ToBase64String(Model.ProfilePictureData)" alt="Profile Picture" class="profile-picture" />
+                    }
+                </div>
+                <div class="col-md-8">
+                    <h4 class="title">You Are Going To Delete</h4>
+                    <p>@Html.DisplayFor(model => model.StaffName)</p>
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="StaffId" />
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-confirm">Confirm</button>
+                            <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
