@@ -36,8 +36,6 @@ namespace SMS_Data.Models
         public bool? IsActive { get;set;}
         public bool? HasMadicleCondition { get;set;}
         public bool? AttendSchoolBefore { get;set;}
-        public string? CreatedBy { get;set;}
-        public string? UpdatedBy { get;set;}
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public virtual Class? ClassTable { get;set;}
