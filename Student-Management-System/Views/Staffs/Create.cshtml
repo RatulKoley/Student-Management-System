@@ -15,6 +15,41 @@
             color: dodgerblue;
         }
 
+    .btn-cancel {
+        background-color: #ff5a5f;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background-color: #e53935;
+            color: #fff;
+        }
+
+    .btn-create {
+        background-color: #3498db;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-create:hover {
+            background-color: #2980b9;
+            color: #fff;
+        }
+
+
+
     #title {
         margin-left: 15px;
         font-weight: 600;
@@ -22,21 +57,6 @@
         display: inline-block;
         margin-bottom: 20px;
     }
-
-    #button {
-        margin-left: 975px;
-        padding: 4px;
-        color: black;
-        border: 2px solid dodgerblue;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        position: fixed;
-    }
-
-        #button :hover {
-            color: dodgerblue;
-            transition: all .5s ease-out;
-        }
 
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -61,15 +81,10 @@
             border-color: #154c79;
         }
 
-
-
 </style>
 <div class="card" style="border-radius:20px;">
     <div class="card-body">
         <h3 id="title">Register New Staff</h3>
-        <span id="button">
-            <a asp-action="Index">Staff List</a>
-        </span>
         <form method="post" enctype="multipart/form-data" asp-action="Create">
         <div class="row">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -268,8 +283,10 @@
                 </div>
          </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-create" />
+                <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
             </div>
+
         </form>
 </div>
     </div>

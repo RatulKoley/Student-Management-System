@@ -7,7 +7,7 @@
 
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .container {
@@ -19,7 +19,9 @@
     .title {
         font-size: 24px;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-top:30px;
+        color:black;
+
     }
 
     .card {
@@ -28,9 +30,15 @@
     }
 
     .card-header {
-        background-color: #f1f1f1;
+        background-color: #1c1c1c;
         padding: 10px;
-        border-bottom: 1px solid #ddd;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .titlenew{
+        color:ghostwhite;
     }
 
     .card-body {
@@ -38,40 +46,59 @@
     }
 
     .profile-picture {
+        border-radius: 50%;
         width: 150px;
         height: 150px;
         object-fit: cover;
         object-position: center;
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        border: 2px solid black;
     }
 
     .btn-confirm {
-        background-color: #dc3545;
         border-color: #dc3545;
+        margin-right:10px;
+        background-color: #dc3545;
+        border-radius: 13px;
         color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 
         .btn-confirm:hover {
-            background-color: #c82333;
             border-color: #bd2130;
+            background-color: #bd2130;
+            color: #fff;
         }
+
 
     .btn-cancel {
         background-color: #fff;
         border-color: #ddd;
         color: #333;
+        border-radius: 13px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 
         .btn-cancel:hover {
             background-color: #f8f9fa;
             border-color: #ccc;
         }
+        .nametag{
+        font-size: 18px;
+        font-weight: 500;
+        color:red;
+        }
 </style>
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3 class="title">Delete Staff</h3>
+            <h3 class="titlenew">Delete Staff</h3>
         </div>
         <div class="card-body">
             <div class="row">
@@ -83,7 +110,7 @@
                 </div>
                 <div class="col-md-8">
                     <h4 class="title">You Are Going To Delete</h4>
-                    <p>@Html.DisplayFor(model => model.StaffName)</p>
+                    <span class="nametag">@Html.DisplayFor(model => model.StaffName)</span>
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="StaffId" />
                         <div class="text-right">

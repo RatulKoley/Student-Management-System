@@ -5,146 +5,311 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    h2 {
-        color:dodgerblue;
-        text-align:center;
-        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    a {
+        padding-left: 5px;
+        color: #1a1c1a;
     }
-</style>
-<h2>Student Registration Form</h2>
-<hr />
 
-<h4>Student</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StudentName" class="control-label"></label>
-                <input asp-for="StudentName" class="form-control" />
-                <span asp-validation-for="StudentName" class="text-danger"></span>
+        a:hover {
+            text-decoration: none;
+            color: dodgerblue;
+        }
+
+    .btn-cancel {
+        background-color: #ff5a5f;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-cancel:hover {
+            background-color: #e53935;
+            color: #fff;
+        }
+
+    .btn-create {
+        background-color: #3498db;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-create:hover {
+            background-color: #2980b9;
+            color: #fff;
+        }
+
+
+
+    #title {
+        margin-left: 15px;
+        font-weight: 600;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .custom-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        padding: 8px;
+        border-radius: 4px;
+        width: 100%;
+        font-size: 14px;
+        color: #155679;
+    }
+
+        .custom-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            border-color: #154c79;
+        }
+
+    .error-message {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .label {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 7px;
+    }
+
+    .label-danger {
+        background-color: #ff5a5f;
+        color: #fff;
+    }
+
+
+</style>
+
+<div class="card" style="border-radius:20px;">
+    <div class="card-body">
+        <h3 id="title">Register New Student</h3>
+        <form method="post" enctype="multipart/form-data" asp-action="Create">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Student Name</h6>
+                        <input asp-for="StudentName" class="form-control" />
+                        <span asp-validation-for="StudentName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Email</h6>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Mobile</h6>
+                        <input asp-for="Mobile" class="form-control" />
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Age</h6>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Class Name</h6>
+                        <select asp-for="ClassId" class="form-control" asp-items="ViewBag.ClassId"></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Admission Date</h6>
+                        <input asp-for="AdmissionDate" class="form-control" type="date" />
+                        <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Gender</h6>
+                        <select asp-for="Gender" class="form-control custom-select">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Religion</h6>
+                        <select asp-for="Religion" class="form-control custom-select">
+                            <option value="">Select Religion</option>
+                            <option value="Hinduism">Hinduism</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Religion" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Parent Name</h6>
+                        <input asp-for="GuardianName" class="form-control" />
+                        <span asp-validation-for="GuardianName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Relationship Type</h6>
+                        <select asp-for="RelationType" class="form-control custom-select">
+                            <option value="">Select Relationship</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="RelationType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Last Attendense</h6>
+                        <input asp-for="LastAttendense" class="form-control" type="date" />
+                        <span asp-validation-for="LastAttendense" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Total Attendense</h6>
+                        <input asp-for="NumberOfAttendances" class="form-control" />
+                        <span asp-validation-for="NumberOfAttendances" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Address</h6>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">City</h6>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">State</h6>
+                        <select asp-for="State" class="form-control custom-select">
+                            <option value="">Select State</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Assam">Assam</option>
+                        </select>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Pincode</h6>
+                        <input asp-for="Pincode" class="form-control" />
+                        <span asp-validation-for="Pincode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Profile Picture</h6>
+                        <input asp-for="ProfilePicture" type="file" name="profilePictureFile" class="form-control-file" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Birth Date</h6>
+                        <input asp-for="BirthDate" class="form-control" type="date" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Health Status</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" asp-for="HasMadicleCondition" />
+                            <label class="form-check-label" asp-for="HasMadicleCondition">Has Medical Condition</label>
+                        </div>
+                        <span asp-validation-for="HasMadicleCondition" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <h6 style="font-weight:600">Attend Before</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" asp-for="AttendSchoolBefore" />
+                            <label class="form-check-label" asp-for="AttendSchoolBefore">Has Previous Admission</label>
+                        </div>
+                        <span asp-validation-for="AttendSchoolBefore" class="text-danger"></span>
+                    </div>
+
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="GuardianName" class="control-label"></label>
-                <input asp-for="GuardianName" class="form-control" />
-                <span asp-validation-for="GuardianName" class="text-danger"></span>
+                <input type="submit" value="Create" class="btn btn-create" />
+                <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
             </div>
-            <div class="form-group">
-                <label asp-for="RelationType" class="control-label"></label>
-                <input asp-for="RelationType" class="form-control" />
-                <span asp-validation-for="RelationType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClassId" class="control-label"></label>
-                <select asp-for="ClassId" class ="form-control" asp-items="ViewBag.ClassId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Religion" class="control-label"></label>
-                <input asp-for="Religion" class="form-control" />
-                <span asp-validation-for="Religion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mobile" class="control-label"></label>
-                <input asp-for="Mobile" class="form-control" />
-                <span asp-validation-for="Mobile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Pincode" class="control-label"></label>
-                <input asp-for="Pincode" class="form-control" />
-                <span asp-validation-for="Pincode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfilePicture" class="control-label"></label>
-                <input asp-for="ProfilePicture" class="form-control" />
-                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdmissionDate" class="control-label"></label>
-                <input asp-for="AdmissionDate" class="form-control" />
-                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastAttendense" class="control-label"></label>
-                <input asp-for="LastAttendense" class="form-control" />
-                <span asp-validation-for="LastAttendense" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumberOfAttendances" class="control-label"></label>
-                <input asp-for="NumberOfAttendances" class="form-control" />
-                <span asp-validation-for="NumberOfAttendances" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsActive" class="control-label"></label>
-                <input asp-for="IsActive" class="form-control" />
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HasMadicleCondition" class="control-label"></label>
-                <input asp-for="HasMadicleCondition" class="form-control" />
-                <span asp-validation-for="HasMadicleCondition" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AttendSchoolBefore" class="control-label"></label>
-                <input asp-for="AttendSchoolBefore" class="form-control" />
-                <span asp-validation-for="AttendSchoolBefore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" class="form-control" />
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedOn" class="control-label"></label>
-                <input asp-for="UpdatedOn" class="form-control" />
-                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="col-md-offset-2 col-md">
+                @if (!string.IsNullOrEmpty(ViewBag.Message))
+                {
+                    <div class="error-message">
+                        <label class="label label-danger">@ViewBag.Message</label>
+                    </div>
+                }
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+

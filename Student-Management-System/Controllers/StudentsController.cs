@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SMS_Data.DataContext;
+using SMS_Data.Helpers;
 using SMS_Data.Models;
 
 namespace Student_Management_System.Controllers
@@ -19,14 +21,12 @@ namespace Student_Management_System.Controllers
             _context = context;
         }
 
-        // GET: Students
         public async Task<IActionResult> Index()
         {
-            var dataContextDB = _context.students.Include(s => s.ClassTable);
+            var dataContextDB = _context.students.Include(s => s.ClassTable).Where(_=>_.IsActive == true);
             return View(await dataContextDB.ToListAsync());
         }
 
-        // GET: Students/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.students == null)
@@ -45,46 +45,67 @@ namespace Student_Management_System.Controllers
             return View(student);
         }
 
-        // GET: Students/Create
         public IActionResult Create()
         {
-            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassId");
+            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName");
             return View();
         }
 
-        // POST: Students/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentId,StudentName,GuardianName,RelationType,ClassId,Age,Gender,Religion,Email,Mobile,Address,City,State,Pincode,ProfilePicture,BirthDate,AdmissionDate,LastAttendense,NumberOfAttendances,IsActive,HasMadicleCondition,AttendSchoolBefore,CreatedBy,UpdatedBy,CreatedOn,UpdatedOn")] Student student)
+        public async Task<IActionResult> Create([FromForm] Student student, IFormFile profilePictureFile)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                if (ModelState.IsValid)
+                student.AdmissionDate = DateTime.Now;
+                student.IsActive = true;
+                student.CreatedOn = DateTime.Now;
+                student.NumberOfAttendances = 0;
+                if (profilePictureFile != null && profilePictureFile.Length > 0)
                 {
-                    var classcheck = await _context.classes.FirstOrDefaultAsync(_ => _.ClassId == student.ClassId);
-                    if (classcheck != null)
+                    student.ProfilePictureData = ImageConverter.ConvertToByteArray(profilePictureFile);
+                }
+
+                var SeatDeduct = await _context.classes.FirstOrDefaultAsync(_ => _.ClassId == student.ClassId);
+
+                if (SeatDeduct != null)
+                {
+                    if (SeatDeduct.TotalSpaceLeft != 0)
                     {
-                        student.IsActive = true;
-                        student.CreatedOn = DateTime.UtcNow;
-                        _context.Add(student);
+                        SeatDeduct.TotalSpaceLeft = SeatDeduct.TotalSpaceLeft - 1;
+                        _context.classes.Update(SeatDeduct);
                         await _context.SaveChangesAsync();
                     }
+                    else
+                    {
+                        ViewBag.Message = "No Seats Available";
+                        ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
+                        return View(student);
+                    }
                 }
-                ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassId", student.ClassId);
+                else
+                {
+                    ViewBag.Message = "Class Discontinued";
+                    ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
+                    return View(student);
+                }
+
+                _context.students.Add(student);
+                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
                 return View(student);
             }
-            return RedirectToAction("Index", "Students");
+
+            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Students/Edit/5
+
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null || _context.students == null)
@@ -97,47 +118,89 @@ namespace Student_Management_System.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassId", student.ClassId);
+            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
             return View(student);
         }
 
-        // POST: Students/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long? id, [Bind("StudentId,StudentName,GuardianName,RelationType,ClassId,Age,Gender,Religion,Email,Mobile,Address,City,State,Pincode,ProfilePicture,BirthDate,AdmissionDate,LastAttendense,NumberOfAttendances,IsActive,HasMadicleCondition,AttendSchoolBefore,CreatedBy,UpdatedBy,CreatedOn,UpdatedOn")] Student student)
+        public async Task<IActionResult> Edit(long? id, [FromForm] Student student, IFormFile profilePictureFile)
         {
-            if (id != student.StudentId)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return NotFound();
-            }
+                var updatestudent = await _context.students.FirstOrDefaultAsync(_ => _.StudentId == student.StudentId);
+                if (updatestudent != null)
+                {
+                    updatestudent.StudentName = student.StudentName;
+                    updatestudent.Email = student.Email;
+                    updatestudent.Mobile = student.Mobile;
+                    updatestudent.BirthDate = student.BirthDate;
+                    updatestudent.GuardianName = student.GuardianName;
+                    updatestudent.Age = student.Age;
+                    updatestudent.Gender = student.Gender;
+                    updatestudent.Religion = student.Religion;
+                    updatestudent.RelationType = student.RelationType;
+                    if(updatestudent.ClassId != student.ClassId)
+                    {
+                        var SeatDeduct = await _context.classes.FirstOrDefaultAsync(_ => _.ClassId == student.ClassId);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(student);
+                        if (SeatDeduct != null)
+                        {
+                            if (SeatDeduct.TotalSpaceLeft != 0)
+                            {
+                                SeatDeduct.TotalSpaceLeft = SeatDeduct.TotalSpaceLeft - 1;
+                                _context.classes.Update(SeatDeduct);
+                                await _context.SaveChangesAsync();
+                                var SeatAdd = await _context.classes.FirstOrDefaultAsync(_ => _.ClassId == updatestudent.ClassId);
+
+                                if (SeatAdd != null)
+                                {
+                                    SeatAdd.TotalSpaceLeft = SeatAdd.TotalSpaceLeft + 1;
+                                    _context.classes.Update(SeatAdd);
+                                    await _context.SaveChangesAsync();
+                                }
+                                updatestudent.ClassId = student.ClassId;
+                            }
+                            else
+                            {
+                                ViewBag.Message = "No Seats Available";
+                                ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
+                                return View(student);
+                            }
+                        }
+                    }
+                    updatestudent.AdmissionDate = student.AdmissionDate;
+                    updatestudent.LastAttendense = student.LastAttendense;
+                    updatestudent.Address = student.Address;
+                    updatestudent.City = student.City;
+                    updatestudent.State = student.State;
+                    updatestudent.Pincode = student.Pincode;
+                    updatestudent.BirthDate = student.BirthDate;
+                    updatestudent.HasMadicleCondition = student.HasMadicleCondition;
+                    updatestudent.NumberOfAttendances = student.NumberOfAttendances;
+                    updatestudent.AttendSchoolBefore = student.AttendSchoolBefore;
+                    updatestudent.UpdatedOn = DateTime.UtcNow;
+                    updatestudent.IsActive = true;
+                    if (profilePictureFile != null && profilePictureFile.Length > 0)
+                    {
+                        student.ProfilePictureData = ImageConverter.ConvertToByteArray(profilePictureFile);
+                        updatestudent.ProfilePictureData = student.ProfilePictureData;
+                    }
+                    _context.students.Update(updatestudent);
                     await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.StudentId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassId", student.ClassId);
-            return View(student);
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return View(student);
+            }
+            ViewData["ClassId"] = new SelectList(_context.classes, "ClassId", "ClassName", student.ClassId);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Students/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _context.students == null)
@@ -156,22 +219,35 @@ namespace Student_Management_System.Controllers
             return View(student);
         }
 
-        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long? id)
         {
-            if (_context.students == null)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return Problem("Entity set 'DataContextDB.students'  is null.");
+                var updatestudent = await _context.students.FirstOrDefaultAsync(_ => _.StudentId == id);
+                if (updatestudent != null)
+                {
+                    updatestudent.UpdatedOn = DateTime.UtcNow;
+                    updatestudent.IsActive = false;
+                    _context.students.Update(updatestudent);
+                    var SeatDeduct = await _context.classes.FirstOrDefaultAsync(_ => _.ClassId == updatestudent.ClassId);
+
+                    if (SeatDeduct != null)
+                    {
+                            SeatDeduct.TotalSpaceLeft = SeatDeduct.TotalSpaceLeft + 1;
+                            _context.classes.Update(SeatDeduct);
+                            await _context.SaveChangesAsync();
+                    }
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
             }
-            var student = await _context.students.FindAsync(id);
-            if (student != null)
+            catch (Exception ex)
             {
-                _context.students.Remove(student);
+                await transaction.RollbackAsync();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

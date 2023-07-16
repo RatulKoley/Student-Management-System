@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,14 +21,12 @@ namespace Student_Management_System.Controllers
             _context = context;
         }
 
-        // GET: Staffs
         public async Task<IActionResult> Index()
         {
             var dataContextDB = _context.staffs.Include(s => s.salarytable);
             return View(await dataContextDB.ToListAsync());
         }
 
-        // GET: Staffs/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.staffs == null)
@@ -46,7 +45,6 @@ namespace Student_Management_System.Controllers
             return View(staff);
         }
 
-        // GET: Staffs/Create
         public IActionResult Create()
         {
             ViewData["SalaryId"] = new SelectList(_context.salaries, "SalaryId", "TypeName");
@@ -67,7 +65,7 @@ namespace Student_Management_System.Controllers
                     {
                         staff.ProfilePictureData = ImageConverter.ConvertToByteArray(profilePictureFile);
                     }
-                _context.Add(staff);
+                _context.staffs.Add(staff);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
@@ -132,7 +130,7 @@ namespace Student_Management_System.Controllers
                         staff.ProfilePictureData = ImageConverter.ConvertToByteArray(profilePictureFile);
                         updatestaff.ProfilePictureData = staff.ProfilePictureData;
                     }
-                    _context.Update(updatestaff);
+                    _context.staffs.Update(updatestaff);
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
@@ -146,7 +144,6 @@ namespace Student_Management_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Staffs/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _context.staffs == null)
@@ -165,22 +162,27 @@ namespace Student_Management_System.Controllers
             return View(staff);
         }
 
-        // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long? id)
         {
-            if (_context.staffs == null)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return Problem("Entity set 'DataContextDB.staffs'  is null.");
+                var updatestaff = await _context.staffs.FirstOrDefaultAsync(_ => _.StaffId == id);
+                if (updatestaff != null)
+                {
+                    updatestaff.UpdatedOn = DateTime.UtcNow;
+                    updatestaff.IsActive = false;
+                    _context.staffs.Update(updatestaff);
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
             }
-            var staff = await _context.staffs.FindAsync(id);
-            if (staff != null)
+            catch (Exception ex)
             {
-                _context.staffs.Remove(staff);
+                await transaction.RollbackAsync();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
