@@ -56,7 +56,10 @@ namespace SMS_Data.DataContext.ModelBuilders
                 entity.Property(e => e.Pincode)
                     .HasMaxLength(10)
                     .HasColumnName("pincode");
-                entity.Property(e => e.ProfilePicture).HasColumnName("profile_photo");
+                entity.Ignore(e => e.ProfilePicture);
+                entity.Property(e => e.ProfilePictureData)
+                      .HasColumnName("ProfilePicture")
+                      .HasColumnType("varbinary(MAX)");
                 entity.Property(e => e.AdmissionDate)
                     .HasColumnType("datetime")
                     .HasColumnName("admission_date");

@@ -23,21 +23,6 @@
         margin-bottom: 20px;
     }
 
-    #button {
-        margin-left: 975px;
-        padding: 4px;
-        color: black;
-        border: 2px solid dodgerblue;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        position: fixed;
-    }
-
-        #button :hover {
-            color: dodgerblue;
-            transition: all .5s ease-out;
-        }
-
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
@@ -60,22 +45,66 @@
             box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
             border-color: #154c79;
         }
-    .profile-picture{
-        border-radius:50%;
-        width:150px;
-        height:150px;
-        object-fit:cover;
-        object-position:center;
-        box-shadow:0 6px 12px rgba(0,0,0,0.4);
+
+    .profile-picture {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
         border: 2px solid black;
+        margin-bottom:15px;
+        text-align: center;
     }
+
+    .btn-cancel {
+        background-color: #ff5a5f;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 50px;
+        
+    }
+
+        .btn-cancel:hover {
+            background-color: #e53935;
+            color: #fff;
+        }
+
+    .btn-update {
+        background-color: #28a745;
+        border-radius: 13px;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 7px;
+        transition: background-color 0.3s;
+        margin-left: 180px;
+        margin-top: 50px;
+    }
+
+        .btn-update:hover {
+            background-color: #218838;
+            color: #fff;
+        }
+
+    .nametag {
+        font-size: 18px;
+        font-weight: 500;
+        color: red;
+    }
+
 </style>
 <div class="card" style="border-radius:20px;">
     <div class="card-body">
         <h3 id="title">Update Staff</h3>
-        <span id="button">
-            <a asp-action="Index">Staff List</a>
-        </span>
         <form method="post" enctype="multipart/form-data" asp-action="Edit">
             <input type="hidden" asp-for="StaffId" />
             <div class="row">
@@ -241,7 +270,7 @@
                         {
                             <img src="data:image;base64,@Convert.ToBase64String(Model.ProfilePictureData)" alt="Profile Picture" class="profile-picture" />
                         }
-                        <input asp-for="ProfilePicture" type="file" name="profilePictureFile" class="form-control-file" />
+                        <input asp-for="ProfilePicture" type="file" name="profilePictureFile" class="form-control-file" style="align-items:center" />
                         <span asp-validation-for="ProfilePicture" class="text-danger"></span>
                     </div>
                 </div>
@@ -250,6 +279,10 @@
                         <h6 style="font-weight:600">Join Date</h6>
                         <input asp-for="JoinedDate" class="form-control" type="date" />
                         <span asp-validation-for="JoinedDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-update" />
+                        <button type="button" class="btn btn-cancel" onclick="window.history.back()">Cancel</button>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -276,13 +309,13 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" />
-            </div>
+            
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

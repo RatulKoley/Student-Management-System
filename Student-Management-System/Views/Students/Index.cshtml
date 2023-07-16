@@ -4,183 +4,122 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    a {
+        padding-left: 5px;
+        color: #1a1c1a;
+    }
 
-<h1>Index</h1>
+        a:hover {
+            text-decoration: none;
+            color: #bd2130;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.StudentName)*@
-                <h4>Name</h4>
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.GuardianName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RelationType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>*@
-           @* <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.Religion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mobile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>*@
-            <th>
-               @* @Html.DisplayNameFor(model => model.City)*@
-                <h4>City</h4>
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pincode)
-            </th>*@
-            <th>
-                @*@Html.DisplayNameFor(model => model.ProfilePicture)*@
-                <h4>Picture</h4>
-            </th>
-           @* <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdmissionDate)
-            </th>*@
-            <th>
-               @* @Html.DisplayNameFor(model => model.LastAttendense)*@
-                <h4>Last Attendence</h4>
-            </th>
-            <th>
-              @*  @Html.DisplayNameFor(model => model.NumberOfAttendances)*@
-                <h4>Total Attendence</h4>
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasMadicleCondition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AttendSchoolBefore)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedOn)
-            </th>*@
-            <th>
-               @* @Html.DisplayNameFor(model => model.ClassTable)*@
-                <h4>Class</h4>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentName)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.GuardianName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RelationType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Religion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mobile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.State)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pincode)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.ProfilePicture)
-            </td>
-           @* <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdmissionDate)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.LastAttendense)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfAttendances)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasMadicleCondition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AttendSchoolBefore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedOn)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassTable.ClassName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    #title {
+        margin-left: 20px;
+        font-weight: 600;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    #button {
+        margin-left: 990px;
+        padding: 6px 12px;
+        color: #fff;
+        background-color: #3498db;
+        border: none;
+        border-radius: 13px;
+        margin-bottom: 14px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+        #button:hover {
+            background-color: #2196f3;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+</style>
+
+<div class="card" style="border-radius:20px;">
+    <div class="card-body">
+        <h3 id="title">Student Management</h3>
+        <a id="button" asp-action="Create">ADD STUDENT</a>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Student Name</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Gender</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Class</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Mobile</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Total Attendence</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Last Attendence</h6>
+                    </th>
+                    <th scope="col">
+                        <h6 style="text-align:center;font-weight:600">Address</h6>
+                    </th>
+                    <th>
+                        <h6 style="text-align:center;font-weight:600">Actions</h6>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="text-align:center; font-size: 14px;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTable.ClassName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mobile)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberOfAttendances)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastAttendense)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+
+                            <a asp-action="Edit" asp-route-id="@item.StudentId">
+                                <i class="fa fa-clipboard"></i>
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.StudentId">
+                                <i class="fa fa-trash"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
